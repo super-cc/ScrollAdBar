@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SCROLL_AD = 0;//会员轮播广告
     public static final int DEFAULT_SCROLL_INTERVAL = 3000;//会员轮播广告间隔时间
-    public static final int DEFAULT_SCROLL_ANIMATION_TIME = 500;//会员轮播广告动画时长
+    public static final float DEFAULT_SCROLL_ANIMATION_TIME = 500;//会员轮播广告动画时长
 
     private RecyclerView mRvAd;
     private AdAdapter mAdapter;
@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     // 为了平滑滑动返回：滑过1px时经历的时间(ms)。
                     @Override
                     protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                        return (float) (DEFAULT_SCROLL_ANIMATION_TIME / displayMetrics.densityDpi);
+                        //这里必须返回一个正数，否则会出错
+                        float duration = DEFAULT_SCROLL_ANIMATION_TIME / displayMetrics.densityDpi;
+                        return duration > 0 ? duration : 1;
                     }
                 };
                 smoothScroller.setTargetPosition(position);
